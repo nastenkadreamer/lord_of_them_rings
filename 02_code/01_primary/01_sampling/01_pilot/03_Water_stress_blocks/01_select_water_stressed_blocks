@@ -1,0 +1,41 @@
+import pandas as pd
+
+# Input files
+files = {
+    "Bihar": "04 Data/01_data/01 Raw/secondary/CGWB_ground_water/Bihar.xlsx",
+    "Rajasthan": "04 Data/01_data/01 Raw/secondary/CGWB_ground_water/Rajasthan.xlsx",
+    "Madhya Pradesh": "04 Data/01_data/01 Raw/secondary/CGWB_ground_water/Madhya Pradesh.xlsx"
+}
+
+dfs = []
+
+for state, path in files.items():
+    # Read raw Excel (no header due to multi-row / messy headers)
+    df = pd.read_excel(path, header=None)
+    print(df)
+    # Column index where:
+    # "Categorization of Assessment Unit" -> "Total" is located
+    total_col = 118
+
+    # Filter required categories
+    filtered = df[
+        df[total_col]
+        .astype(str)
+        .str.lower()
+        .isin(["critical", "over_exploited", "semi_critical"])
+    ].copy()
+
+    # Keep only required columns
+    result = filtered[[1, 2, 3, total_col]]
+    result.columns = ["State", "District", "Block", "Total"]
+
+    dfs.append(result)
+
+# Append all states into one dataframe
+final_df = pd.concat(dfs, ignore_index=True)
+
+# Export to Excel
+output_path = "04 Data/01_data/02 Inter/03_Sampled_water_stress_blocks/critical_overexploited_semicritical_assessment_units.xlsx"
+final_df.to_excel(output_path, index=False)
+
+print("File saved at:", output_path)
