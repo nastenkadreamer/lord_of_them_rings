@@ -11,7 +11,7 @@ from io import BytesIO
 import os
 
 # Set your username here
-username = "anind"  # Replace with your username
+username = "anind"  # Replace with your username or any thing that can make this code work on your system. You can also use os.getlogin() to get the current username dynamically.
 
 # Define the root path
 root_path = Path(f"C:/Users/{username}/Dropbox/Building Resilience Barwani")
