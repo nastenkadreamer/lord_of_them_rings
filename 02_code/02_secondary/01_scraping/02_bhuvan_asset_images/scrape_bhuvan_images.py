@@ -3,7 +3,12 @@ This script scrapes images from the Bhuvan geospatial platform for selected asse
 It downloads asset images based on data from a sampled asset Excel file for further analysis.
 """
 
-
+import pandas as pd
+import requests
+from pathlib import Path
+from PIL import Image
+from io import BytesIO
+import os
 
 # Set your username here
 username = "anind"  # Replace with your username or any thing that can make this code work on your system. You can also use os.getlogin() to get the current username dynamically.
